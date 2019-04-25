@@ -9,7 +9,7 @@ struct AppState {
 }
 
 #[derive(Fail, Debug)]
-#[fail(display="my error")]
+#[fail(display="api error")]
 struct ApiError {
    msg: &'static str
 }
