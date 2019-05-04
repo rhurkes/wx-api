@@ -9,9 +9,9 @@ struct AppState {
 }
 
 #[derive(Fail, Debug)]
-#[fail(display="api error")]
+#[fail(display = "api error")]
 struct ApiError {
-   msg: &'static str
+    msg: &'static str,
 }
 
 impl error::ResponseError for ApiError {}
@@ -21,14 +21,12 @@ fn main() {
         App::with_state(AppState {
             store_client: Client::default(),
         })
-        .resource(
-            "/events/{ts}",
-            |r| r.method(http::Method::GET).with(events_handler)
-        )
-        .resource(
-            "/all",
-            |r| r.method(http::Method::GET).with(all_events_handler)
-        )
+        .resource("/events/{ts}", |r| {
+            r.method(http::Method::GET).with(events_handler)
+        })
+        .resource("/all", |r| {
+            r.method(http::Method::GET).with(all_events_handler)
+        })
     })
     .bind("127.0.0.1:8080")
     .unwrap()
@@ -37,10 +35,12 @@ fn main() {
 
 fn events_handler(state: State<AppState>, info: Path<u64>) -> Result<Json<Vec<Event>>, ApiError> {
     let events_result = state.store_client.get_events(info.into_inner());
-    
+
     match events_result {
         Ok(events) => Ok(Json(events)),
-        Err(_) => Err(ApiError{msg: "Unable to retrieve events"})
+        Err(_) => Err(ApiError {
+            msg: "Unable to retrieve events",
+        }),
     }
 }
 
@@ -49,6 +49,8 @@ fn all_events_handler(state: State<AppState>) -> Result<Json<Vec<Event>>, ApiErr
 
     match events_result {
         Ok(events) => Ok(Json(events)),
-        Err(_) => Err(ApiError{msg: "Unable to retrieve events"})
+        Err(_) => Err(ApiError {
+            msg: "Unable to retrieve events",
+        }),
     }
 }

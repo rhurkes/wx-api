@@ -1,5 +1,5 @@
 [package]
-name = "wx_api"
+name = "wx-api"
 version = "0.1.0"
 authors = ["Rob Hurkes <rhurkes@gmail.com>"]
 edition = "2018"
