@@ -48,7 +48,6 @@ fn events_handler(state: State<AppState>, info: Path<u64>) -> Result<Json<Vec<Ev
 }
 
 fn all_events_handler(state: State<AppState>) -> Result<Json<Vec<Event>>, ApiError> {
-    get_system_micros
     let events_result = state.store_client.get_all_events();
 
     match events_result {
