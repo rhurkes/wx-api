@@ -34,7 +34,10 @@ fn main() {
 }
 
 fn events_handler(state: State<AppState>, info: Path<u64>) -> Result<Json<Vec<Event>>, ApiError> {
+    let start = wx::util::get_system_micros();
     let events_result = state.store_client.get_events(info.into_inner());
+    let end = wx::util::get_system_micros();
+    println!("event_lookup: {}", end - start);
 
     match events_result {
         Ok(events) => Ok(Json(events)),
@@ -45,6 +48,7 @@ fn events_handler(state: State<AppState>, info: Path<u64>) -> Result<Json<Vec<Ev
 }
 
 fn all_events_handler(state: State<AppState>) -> Result<Json<Vec<Event>>, ApiError> {
+    get_system_micros
     let events_result = state.store_client.get_all_events();
 
     match events_result {
